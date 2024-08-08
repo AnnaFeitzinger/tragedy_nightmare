@@ -37,6 +37,7 @@ async fn main() -> tokio::io::Result<()> {
 		})
 		.collect();
 	// extracts sequences from species-specific genome in fasta format.
+	// CHANGE THIS PATH by downloading from flybase the 2018/2019/latest fasta file and putting it into data/ and copying the path and pasting it in this fn
 	let sequences = extract_sequences("./data/dpse-all-gene-r3.04.fasta", &flybase_ids).await?;
 
 	// prints the sequences out, you can also use `noodles::fasta::io::Writer` to write to a new fasta file, as shown below.
