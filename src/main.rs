@@ -39,18 +39,10 @@ async fn main() -> tokio::io::Result<()> {
 	// extracts sequences from species-specific genome in fasta format.
 	// CHANGE THIS PATH by downloading from flybase the 2018/2019/latest fasta file and putting it into data/ and copying the path and pasting it in this fn
 	let sequences = extract_sequences("./data/dpse-all-gene-r3.04.fasta", &flybase_ids).await?;
-
-	// prints the sequences out, you can also use `noodles::fasta::io::Writer` to write to a new fasta file, as shown below.
-	for (id, seq) in sequences {
-		let (desc, sequence) = seq;
-		println!(">{}\n{}", desc, str::from_utf8(sequence).unwrap().to_string());
-	}
-
 	let mut writer = noodles::fasta::io::Writer::new(std::io::stdout().lock());
 
-	for (id, seq) in sequences {
-		let (desc, sequence) = seq;
-		println!(">{}\n{}", desc, str::from_utf8(sequence).unwrap().to_string());
+	for (id, record) in sequences {
+		writer.write_record(&record)?;
 	}
 	
 	Ok(())
@@ -59,7 +51,7 @@ async fn main() -> tokio::io::Result<()> {
 async fn extract_sequences(
 	fasta_file: &str,
 	ids: &[String],
-) -> tokio::io::Result<HashMap<String, (String, noodles::fasta::record::Record)>> {
+) -> tokio::io::Result<HashMap<String, noodles::fasta::record::Record>> {
 	let mut reader = File::open(fasta_file)
 		.map(BufReader::new)
 		.map(noodles::fasta::io::Reader::new)?;
