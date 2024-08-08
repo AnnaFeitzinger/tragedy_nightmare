@@ -42,15 +42,24 @@ async fn main() -> tokio::io::Result<()> {
 
 	// prints the sequences out, you can also use `noodles::fasta::io::Writer` to write to a new fasta file, as shown below.
 	for (id, seq) in sequences {
-		println!(">{}\n{}", id, seq);
+		let (desc, sequence) = seq;
+		println!(">{}\n{}", desc, str::from_utf8(sequence).unwrap().to_string());
 	}
+
+	let mut writer = noodles::fasta::io::Writer::new(std::io::stdout().lock());
+
+	for (id, seq) in sequences {
+		let (desc, sequence) = seq;
+		println!(">{}\n{}", desc, str::from_utf8(sequence).unwrap().to_string());
+	}
+	
 	Ok(())
 }
 
 async fn extract_sequences(
 	fasta_file: &str,
 	ids: &[String],
-) -> tokio::io::Result<HashMap<String, (String, noodles::fasta::record::sequence::Sequence)>> {
+) -> tokio::io::Result<HashMap<String, (String, noodles::fasta::record::Record)>> {
 	let mut reader = File::open(fasta_file)
 		.map(BufReader::new)
 		.map(noodles::fasta::io::Reader::new)?;
@@ -59,10 +68,9 @@ async fn extract_sequences(
 	for result in reader.records() {
 		let record = result?;
 		let id = str::from_utf8(record.name()).unwrap().to_string(); // this is the actual id for the species genome
-		let description = str::from_utf8(record.description().as_ref().unwrap()).unwrap().to_string(); 
 		if ids.contains(&id) {
 			// checks if the non-dmel gene exists in the fasta record, if it does then we add it to `sequences`.
-			sequences.insert(id, (description, record.sequence().clone()));
+			sequences.insert(id, record);
 		}
 	}
 
