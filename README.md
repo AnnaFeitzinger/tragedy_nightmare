@@ -2,10 +2,13 @@
 
 ## usage
 1. install cargo and rust with [`rustup`](https://rustup.rs/).
-2. edit `src/main.rs` to your specification. (mostly just change the genome file for each one you would like to filter)
-3. build the portable binary with `cargo build --release`.
-4. run the binary on the system with `cargo run --release`.
-5. to target the binary to different platforms, see rust's documentation on cross compilation.
+2. clone the repository with `git clone https://github.com/AnnaFeitzinger/tragedy_nightmare.git && cd tragedy_nightmare`
+3. edit `src/main.rs` to your specification. (mostly just change the genome file for each one you would like to filter)
+4. optional: if you are using flybase (recommended), download your input genomes/original `.fasta` files from <https://ftp.flybase.net/genomes/>, choosing each species you want to filter's file, and choosing the latest release from 2019, 2018, 2017, or if needed the current genome release. we recommend the `/genomes/species/fasta/<genome>-all-r<version>-gene.fasta` file, as it includes all genes indexed in the genome. move these files into the [`/data`](./data) directory.
+5. download/move your original `.fasta` files into the data directory, and modify the `src/main.rs` accordingly (you will have to `cargo run` multiple times for multiple file, changing `main.rs`, specifically the `extract_sequence` function input as the new path, with the new files each time, along with the `file_writer`'s output file, for each input file change)
+6. build the portable binary with `cargo build --release`. (this comes with the hard-coded input and output names, so it's not recommended)
+7. run the binary on the system with `cargo run --release`. (this will run the command instantly on your platform, and changes if you change input and output and re-run)
+8. to target the binary to different platforms, see [rust's documentation on cross compilation](https://rust-lang.github.io/rustup/cross-compilation.html)
 
 ## information/specifications
 - expects an ortholog file of a certain type, see the `data` directory for file structures and types.
