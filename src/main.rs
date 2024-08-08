@@ -50,7 +50,7 @@ async fn main() -> tokio::io::Result<()> {
 async fn extract_sequences(
 	fasta_file: &str,
 	ids: &[String],
-) -> tokio::io::Result<HashMap<String, (noodles::fasta::Description, noodles::fasta::Sequence)>> {
+) -> tokio::io::Result<HashMap<String, String>> {
 	let mut reader = File::open(fasta_file)
 		.map(BufReader::new)
 		.map(noodles::fasta::io::Reader::new)?;
