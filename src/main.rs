@@ -59,7 +59,7 @@ async fn extract_sequences(
 	for result in reader.records() {
 		let record = result?;
 		let id = str::from_utf8(record.name()).unwrap().to_string(); // this is the actual id for the species genome
-		let description = str::from_utf8(record.description().as_ref()).expect("failed to parse fasta description").unwrap().to_string(); 
+		let description = str::from_utf8(record.description().as_ref().unwrap()).unwrap().to_string(); 
 		if ids.contains(&id) {
 			// checks if the non-dmel gene exists in the fasta record, if it does then we add it to `sequences`.
 			sequences.insert(id, (description, record.sequence().clone()));
