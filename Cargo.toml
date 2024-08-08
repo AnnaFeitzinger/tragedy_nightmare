@@ -1,0 +1,13 @@
+[package]
+name = "gff_parser"
+version = "0.1.0"
+edition = "2021"
+license = "UNLICENSE"
+authors = ["Ethan Bennun <ethan_bennun@horacemann.org> (tr4np0rt)"]
+
+[dependencies]
+noodles = { version = "0.79", features = ["fasta", "async"] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+csv = { version = "1.3" }
+# calamine = { version = "0.25" }
