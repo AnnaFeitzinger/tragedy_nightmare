@@ -50,7 +50,7 @@ async fn main() -> tokio::io::Result<()> {
 async fn extract_sequences(
 	fasta_file: &str,
 	ids: &[String],
-) -> tokio::io::Result<HashMap<String, String>> {
+) -> tokio::io::Result<HashMap<String, (String, String)>> {
 	let mut reader = File::open(fasta_file)
 		.map(BufReader::new)
 		.map(noodles::fasta::io::Reader::new)?;
@@ -59,9 +59,10 @@ async fn extract_sequences(
 	for result in reader.records() {
 		let record = result?;
 		let id = str::from_utf8(record.name()).unwrap().to_string(); // this is the actual id for the species genome
+		let description = str::from_utf8(record.description().as_ref()).unwrap().to_string(); 
 		if ids.contains(&id) {
 			// checks if the non-dmel gene exists in the fasta record, if it does then we add it to `sequences`.
-			sequences.insert(id, (record.description(), record.sequence()));
+			sequences.insert(id, (description, record.sequence()));
 		}
 	}
 
