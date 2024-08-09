@@ -16,7 +16,16 @@ jobs:
     name: Build Rust
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@master
+      with:
+        profile: minimal
+        toolchain: nightly
+        components: clippy, rustfmt
+        
     - name: Build
       run: cargo build --verbose
     - name: Upload
@@ -28,6 +37,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Format Rust
     steps:
-      - uses: actions/checkout@v4
-      - name: Build
-        run: cargo +nightly fmt --check
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          profile: minimal
+          toolchain: nightly
+          components: clippy, rustfmt
+          
+      - name: Format
+        run: cargo fmt --check
