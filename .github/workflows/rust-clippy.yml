@@ -16,16 +16,15 @@ jobs:
       security-events: write
       actions: read
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install Rust toolchain
-        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af
+        uses: dtolnay/rust-toolchain@master
         with:
           profile: minimal
-          toolchain: stable
-          components: clippy
-          override: true
+          toolchain: nightly
+          components: clippy, rustfmt
 
       - name: Install required cargo
         run: cargo install clippy-sarif sarif-fmt
