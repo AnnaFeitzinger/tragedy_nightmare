@@ -40,7 +40,8 @@ async fn main() -> tokio::io::Result<()> {
 	// CHANGE THIS PATH by downloading from flybase the 2018/2019/latest fasta file and putting it into data/ and copying the path and pasting it in this fn
 	let sequences = extract_sequences("./data/dpse-all-gene-r3.04.fasta", &flybase_ids).await?;
 	let mut writer = noodles::fasta::io::Writer::new(std::io::stdout().lock()); // you can change stdout to any writable stream, e.g. a file name
-	let mut file_writer = noodles::fasta::io::Writer::new(File::create("./filtered/my_filtered.fasta")?);
+	let mut file_writer =
+		noodles::fasta::io::Writer::new(File::create("./filtered/my_filtered.fasta")?);
 
 	for (id, record) in sequences {
 		writer.write_record(&record)?;
