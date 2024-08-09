@@ -13,8 +13,21 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    name: Build Rust
 
     steps:
     - uses: actions/checkout@v4
     - name: Build
       run: cargo build --verbose
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        path: target/debug/gff_parser    
+
+  format:
+    runs-on: ubuntu-latest
+    name: Format Rust
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: cargo +nightly fmt --check
